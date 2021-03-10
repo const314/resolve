@@ -6,6 +6,7 @@ const http = require('http')
 const {
   getResolvePackages,
   getLocalRegistryConfig,
+  safeName,
 } = require('@internal/helpers')
 
 const localRegistry = getLocalRegistryConfig()
@@ -13,13 +14,14 @@ const localRegistry = getLocalRegistryConfig()
 http
   .createServer((req, res) => {
     const fileName = req.url.slice(1)
-
     const filePath = path.join(
       localRegistry.directory,
       fileName.replace(/\?hash.*$/, '')
     )
 
     const resolvePackages = getResolvePackages()
+      .map(safeName)
+      .map((x) => x.replace('.tgz', ''))
 
     if (
       !resolvePackages.includes(fileName.replace(/\.tgz.*$/, '')) ||
