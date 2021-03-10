@@ -24,7 +24,10 @@ const main = async () => {
     .readdirSync(examplesDir, { withFileTypes: true })
     .filter((item) => item.isDirectory())
     .map((item) => item.name)
-    .filter((name) => name !== 'hello-world-typescript')
+    .filter(
+      (name) =>
+        name !== 'hello-world-typescript' && name !== 'shopping-list-advanced'
+    )
 
   exampleNames.forEach((example) => {
     log.info(`Using create-resolve-app template: ${example}`)
