@@ -3,7 +3,7 @@ name: dev (push)
 on:
   push:
     branches:
-      - dev
+      - disabled
 
 jobs:
   e2e-mac:
@@ -43,4 +43,3 @@ jobs:
           tag: dev
           unpublish: false
           github_target_repository: resolve-js/resolve
-

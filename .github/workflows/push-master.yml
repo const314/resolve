@@ -3,7 +3,7 @@ name: master (push)
 on:
   push:
     branches:
-      - master*
+      - disabled
 
 jobs:
   release:
@@ -34,4 +34,3 @@ jobs:
           ssh_private_key: ${{ secrets.RESOLVE_BOT_SSH_PRIVATE_KEY }}
           release_branch: master-test
           development_branch: dev
-
