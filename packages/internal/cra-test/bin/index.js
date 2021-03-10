@@ -18,9 +18,12 @@ const main = async () => {
   fs.mkdirSync(tempDir)
 
   const exampleNames = getResolveExamples().map((item) => item.name)
-
-  exampleNames.forEach((example) => {
-    log.info(`Using create-resolve-app template: ${example}`)
+  exampleNames.forEach((example, index) => {
+    log.info(
+      `Create-resolve-app template testing ${index + 1} of ${
+        exampleNames.length
+      }: ${example}`
+    )
     execSync(
       `node ${path.resolve(
         rootDir,
