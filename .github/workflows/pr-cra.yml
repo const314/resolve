@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+
       - name: Yarn Cache Clean
         run: yarn cache clean
 
@@ -18,8 +22,8 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn build-packages
-          yarn add pm2 -W
-          which pm2
+          yarn global add pm2
+          echo "::add-path::$(yarn global bin)"
           pm2 delete local-registry || true
           pm2 start packages/internal/local-registry/bin/index.js --name local-registry
 
