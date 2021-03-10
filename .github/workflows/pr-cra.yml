@@ -19,6 +19,7 @@ jobs:
           yarn install --frozen-lockfile
           yarn build-packages
           yarn add pm2 -W
+          which pm2
           pm2 delete local-registry || true
           pm2 start packages/internal/local-registry/bin/index.js --name local-registry
 
