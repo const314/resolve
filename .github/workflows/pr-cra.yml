@@ -22,8 +22,7 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn build-packages
-          yarn global add pm2
-          echo "::add-path::$(yarn global bin)"
+          npm install pm2 -g
           pm2 delete local-registry || true
           pm2 start packages/internal/local-registry/bin/index.js --name local-registry
 
