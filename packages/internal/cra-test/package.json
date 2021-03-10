@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "consola": "^2.15.3",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "@internal/helpers": "0.28.0-alpha.2"
   }
 }
