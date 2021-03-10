@@ -25,7 +25,6 @@ jobs:
           npm install pm2 -g
           # pm2 delete local-registry || true
           pm2 start packages/internal/local-registry/bin/index.js --name local-registry
-          curl http://0.0.0.0:10080
 
       - name: Examples E2E test
         env:
