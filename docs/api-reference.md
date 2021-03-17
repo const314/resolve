@@ -5,7 +5,74 @@ title: API Reference
 
 ## Read Model Connector Interface
 
-The table below lists functions a custom Read Model's connector should implement.
+This section describes interfaces that you can implement to create a valid Read Model connector. The following connector types are available:
+
+- [Inline ledger](#inline-ledger) - The connector itself implements the ledger API.
+- [XA eventbus ledger](#xa-eventbus-ledger) - The connector implements the two-phase transaction logic.
+- [Transactional eventbus ledger](#transactional-eventbus-ledger) - The connector implements simple transaction.
+- [Non-transactional eventbus ledger](#non-transactional-eventbus-ledger) - The connector does not use transactions.
+
+Depending on the type that you want to implement, your connector implementations should expose different sets of API functions. The subsections below describe these APIs in greater detail.
+
+### Inline Ledger
+
+This interface allows you to implement a Read Model connector with an inbuilt ledger that does not rely on the ledger provided by the event bus. This is the most flexible option that is suitable for complex use-case scenarios.
+
+| Function Name  | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| connect        | Connect to the database.                             |
+| disconnect     | Disconnect from the database.                        |
+| subscribe      | Subscribe to events.                                 |
+| resubscribe    | Resubscribe to events.                               |
+| unsubscribe    | Unsubscribe from events.                             |
+| deleteProperty | Delete a saga property.                              |
+| getProperty    | Get a saga property.                                 |
+| listProperties | Get a list of saga properties.                       |
+| setProperty    | Set a property value.                                |
+| reset          | Reset the Read Model's state.                        |
+| pause          | Stop processing events.                              |
+| resume         | Resume processing events.                            |
+| status         | Get the Read Model status.                           |
+| build          | Build the Read Model state based on existing events. |
+
+### XA eventbus ledger
+
+Use this interface to implement a Read Model connector that supports two-phase transactions. With this approach, each event is prepared for the transaction can be committed. A transaction can be committed after each node of a distributed system reported that it is ready to commit.
+
+| Function Name         | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| connect               | Connect to the database.                          |
+| disconnect            | Disconnect from the database.                     |
+| beginXATransaction    | Start a new transaction.                          |
+| beginEvent            | Add an event to the transaction.                  |
+| commitXATransaction   | Commit the transaction.                           |
+| commitEvent           | Commit an event to the transaction.               |
+| rollbackXATransaction | Cancel the transaction and roll back all changes. |
+| rollbackEvent         | Remove an event from the transaction.             |
+| dropReadModel         | Remove the Read Model's data from the database.   |
+
+### Transactional eventbus ledger
+
+Use this interface to implement a a Read Model connector that supports basic single-phase transactions. Use this style of connectors in a system with a single database. For distributed systems, consider two-phase transactions.
+
+| Function Name       | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| connect             | Connect to the database.                          |
+| disconnect          | Disconnect from the database.                     |
+| beginTransaction    | Start a new transaction.                          |
+| commitTransaction   | Commit the transaction.                           |
+| rollbackTransaction | Cancel the transaction and roll back all changes. |
+
+### Non-transactional eventbus ledger
+
+Use this interface to implement a Read Model connector that does not use transaction mechanisms. This style of connectors requires you to make a compromise between the storage's flexibility and data integrity. For example, it is good for upsert-only storages but operations that require multiple queries can compromise data integrity.
+
+| Function Name | Description                   |
+| ------------- | ----------------------------- |
+| connect       | Connect to the database.      |
+| disconnect    | Disconnect from the database. |
+
+---
 
 | Function Name             | Description                                      |
 | ------------------------- | ------------------------------------------------ |
